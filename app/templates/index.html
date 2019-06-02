@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Actual</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+</head>
+<body>
+<div class="container">
+    <div class="row">
+        <div class="col">
+            </br>
+            <h1>Актуальные тарифы</h1>
+            </br>
+            <div class="card-deck">
+                {% for tariff in tariffs %}
+                <div class="card">
+                    <div class="card-body">
+                        <h2 class="card-title">
+                            {{ tariff.name }}
+                            {% if tariff.hit %}
+                            <span class="badge badge-danger">ХИТ</span>
+                            {% endif %}
+                        </h2>
+                        <h4 class="card-text">
+                            {% if tariff.price != 0 %}
+                            {{ tariff.price }} руб/{{ tariff.price_period }}
+                            {% else %}
+                            Без абонентской платы
+                            {% endif %}
+                        </h4>
+                    </div>
+                    <ul class="list-group list-group-flush">
+                        {% if tariff.gb != 0 %}
+                        <li class="list-group-item">
+                            {% if tariff.gb == -1 %}
+                            Безлимитный интернет
+                            {% elif tariff.gb > 0 %}
+                            {{ tariff.gb }} ГБ
+                            {% endif %}
+                            {% if tariff.social_networks_unlim %}
+                            + безлимитные
+                            <img class="card-img-top" src="{{ url_for('static', filename='vk.png') }}" alt="VK"
+                                 width="20" height="20">
+                            <img class="card-img-top" src="{{ url_for('static', filename='fb.png') }}" alt="FB"
+                                 width="20" height="20">
+                            <img class="card-img-top" src="{{ url_for('static', filename='yt.png') }}" alt="YOUTUBE"
+                                 width="20" height="20">
+                            <img class="card-img-top" src="{{ url_for('static', filename='inst.png') }}" alt="INSTAGRAM"
+                                 width="20" height="20">
+                            {% endif %}
+                        </li>
+                        {% endif %}
+                        {% if tariff.minutes > 0 %}
+                        <li class="list-group-item">
+                            {{ tariff.minutes }} мин
+                            {% if tariff.minutes_unlim_tele2 %}
+                            + безлимит на Теле2 России
+                            {% endif %}
+                        </li>
+                        {% endif %}
+                        {% if tariff.sms > 0 %}
+                            <li class="list-group-item">
+                                {{ tariff.sms }} SMS
+                            </li>
+                        {% endif %}
+                    </ul>
+                </div>
+                {% endfor %}
+            </div>
+            <div class="mt-2">
+                <a href="{{ url_for('old') }}">Архивные тарифы</a>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
